@@ -13,6 +13,8 @@ Copyright 2013, Michael Kerrisk; 2020, Ryan Barry
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/mount.h>
+#include <sys/stat.h>
 
 /* A simple error-handling function: print an error message based
    on the value in 'errno' and terminate the calling process */
@@ -22,8 +24,14 @@ static int childFunc(void *arg) {   /* Start function for cloned child */
   printf("childFunc(): PID = %ld\n", (long) getpid());
   printf("childFunc(): PPID = %ld\n", (long) getppid());
     struct utsname uts;
+    char *mount_point = arg;
 
     /* Change hostname in UTS namespace of child */
+    /*
+    mkdir(mount_point, 0555);       // Create directory for mount point 
+    mount("proc", mount_point, "proc", 0, NULL);
+    printf("Mounting procfs at %s\n", mount_point);
+    */
 
     if (sethostname(arg, strlen(arg)) == -1) {
         errExit("sethostname");
