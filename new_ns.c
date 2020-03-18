@@ -19,6 +19,8 @@ Copyright 2013, Michael Kerrisk; 2020, Ryan Barry
 #define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while (0)
 
 static int childFunc(void *arg) {   /* Start function for cloned child */
+  printf("childFunc(): PID = %ld\n", (long) getpid());
+  printf("childFunc(): PPID = %ld\n", (long) getppid());
     struct utsname uts;
 
     /* Change hostname in UTS namespace of child */
@@ -38,7 +40,7 @@ static int childFunc(void *arg) {   /* Start function for cloned child */
        This allows some experimentation--for example, another
        process might join the namespace. */
 
-    sleep(100);
+    sleep(600);
 
     return 0;           /* Terminates child */
 }
